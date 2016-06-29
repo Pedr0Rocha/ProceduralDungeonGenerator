@@ -1,6 +1,21 @@
 <h1 class="main-title">Procedural Dungeon Generator</h1>
-	
-<canvas id="canvas"></canvas>
+
+<div class="side-menu">
+	<h3 class="side-menu-title">Parameters</h3>
+	<div class="fields">
+		<label class="label-title">Number of Rooms</label>
+		<div><input type="number" name="rooms"></div>
+	</div>
+	<div class="fields">
+		<label class="label-title">Room Size</label>
+		<div><label>Max:</label><input type="number" name="maxSize">
+		<label>Min:</label><input type="number" name="minSize"></div>
+	</div>
+	<button class="btn-generate" id="btn-generate" onClick="Renderer.Render();">Generate Dungeon</button></div>
+
+<div class="canvas-wrapper">
+	<canvas id="canvas"></canvas>
+</div>
 
 <script type="text/javascript" src="maprenderer.js"></script>
 <link rel="stylesheet" type="text/css" href="style.css">

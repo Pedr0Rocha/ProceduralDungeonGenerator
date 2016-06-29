@@ -20,12 +20,12 @@ var Renderer = {
     },
 
     Render: function () {
-        this.context.fillStyle = COLOR_FLOOR;
         for (var y = 0; y < this.height; y++)
-            for (var x = 0; x < this.width; x++)
+            for (var x = 0; x < this.width; x++){
+                if (y % 2 == 0 && x % 2 == 0) this.context.fillStyle = COLOR_FLOOR;
+                else this.context.fillStyle = COLOR_VOID;
                 this.context.fillRect(x * this.scale, y * this.scale, this.scale, this.scale);
+            }
     }
 };
-
 Renderer.Init();
-Renderer.Render();
