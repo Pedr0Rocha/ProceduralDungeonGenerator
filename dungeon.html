@@ -4,14 +4,14 @@
 	<h3 class="side-menu-title">Parameters</h3>
 	<div class="fields">
 		<label class="label-title">Number of Rooms</label>
-		<div><input type="number" name="rooms"></div>
+		<div><input type="number" name="rooms" id="rooms"></div>
 	</div>
 	<div class="fields">
 		<label class="label-title">Room Size</label>
-		<div><label>Max:</label><input type="number" name="maxSize">
-		<label>Min:</label><input type="number" name="minSize"></div>
+		<div><label>Max:</label><input type="number" name="maxSize" id="maxSize">
+		<label>Min:</label><input type="number" name="minSize" id="minSize"></div>
 	</div>
-	<button class="btn-generate" id="btn-generate" onClick="Renderer.Render();">Generate Dungeon</button></div>
+	<button class="btn-generate" id="btn-generate" onClick="generateNewDungeon();">Generate Dungeon</button></div>
 
 <div class="canvas-wrapper">
 	<canvas id="canvas"></canvas>
