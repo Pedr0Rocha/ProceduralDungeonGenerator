@@ -45,19 +45,20 @@ var Dungeon = {
     this.aisle = [];
   },
 
-  generate: function(roomNumber, minSize, maxSize, mapWidth, mapHeight) {
+  generate: function(roomNumber, minSize, maxSize, mapWidth, mapHeight, sparseDungeon) {
     this.roomNumber = roomNumber;
     this.maxSize = maxSize;
     this.minSize = minSize;
     this.mapWidth = mapWidth;
     this.mapHeight = mapHeight;
+    this.gap = sparseDungeon ? 50 : 1;
 
     while (this.rooms.length < this.roomNumber) {
       var newRoom = this.createNonOverlappingRoom();
       this.rooms.push(newRoom);
     }
 
-    this.squashRooms(200);
+    this.squashRooms(200, this.gap);
     this.conectRooms();
 
     console.log("Aisles created: " + this.aisle.length);
@@ -86,16 +87,16 @@ var Dungeon = {
     return false;
   },
 
-  squashRooms: function(loops) {
+  squashRooms: function(loops, gap) {
     while (loops > 0) {
       for (var i in this.rooms) {
-        this.rooms[i].x--;
+        this.rooms[i].x -= gap;
         if (this.rooms[i].x < 0 || this.hasCollision(this.rooms[i], i))
-          this.rooms[i].x++;
+          this.rooms[i].x += gap;
 
-        this.rooms[i].y--;
+        this.rooms[i].y -= gap;
         if (this.rooms[i].y < 0 || this.hasCollision(this.rooms[i], i))
-          this.rooms[i].y++;
+          this.rooms[i].y += gap;
       }
       loops--;
     }
@@ -163,7 +164,7 @@ var Dungeon = {
       else
         vAisle.y = rightyRoom.y + rightyRoom.height; 
       vAisle.x = lastX;
-      vAisle.height = Math.abs(lastY - rightyRoom.y);
+      vAisle.height = Math.abs(lastY - rightyRoom.y) + this.aisleLen; // 2 pixels wide walls from both rooms
       vAisle.width = this.aisleLen;
     }
 
@@ -179,6 +180,20 @@ var Dungeon = {
 
   },
 
+  getNearestRoom: function(distances, i) {
+    var nearestRoom;
+    var minDistance = undefined;
+    for (var j in this.rooms) {
+      if (distances[i][j] == 0) continue;
+      if (minDistance == undefined || distances[i][j] < minDistance) {
+        minDistance = distances[i][j];
+        nearestRoom = j;
+      }
+    }
+    console.log("Connecting " + i + " with " + nearestRoom + " - dist: " + minDistance);
+    return nearestRoom;
+  },
+
   conectRooms: function() {
     var connected = {};
     for (var i in this.rooms) {
@@ -186,27 +201,15 @@ var Dungeon = {
     } 
 
     var distance = this.getDistanceFromAll();
-    for (var i in this.rooms)
-      console.log(distance[i]);
     for (var i in this.rooms) {
       if (connected[i])
         continue;
 
       for (var k = 0; k < getRandom(1, this.maxAisle); k++) {
-        var min;
-        var minDistance = undefined;
-        for (var j in this.rooms) {
-          if (distance[i][j] == 0) continue;
-          if (minDistance == undefined || distance[i][j] < minDistance) {
-            minDistance = distance[i][j]; 
-            min = j;
-          }
-        }
-
-        console.log("Connecting " + i + " with " + min + " - dist: " + minDistance);
-        this.connect(i, min);
+        nearestRoom = this.getNearestRoom(distance, i);
+        this.connect(i, nearestRoom);
         connected[i] = true;
-        distance[i][min] = 0;
+        distance[i][nearestRoom] = 0;
       }
     }
   },
@@ -264,9 +267,10 @@ var generateNewDungeon = function() {
   var roomNumber = +document.getElementById('rooms').value;
   var maxSize = +document.getElementById('maxSize').value;
   var minSize = +document.getElementById('minSize').value;
+  var sparseDungeon = document.getElementById('dungeonType').checked;
 
   Dungeon.clear();
-  Dungeon.generate(roomNumber, minSize, maxSize, MAP_WIDTH, MAP_HEIGHT);
+  Dungeon.generate(roomNumber, minSize, maxSize, MAP_WIDTH, MAP_HEIGHT, sparseDungeon);
   Dungeon.renderWalls(Renderer);
   Dungeon.renderFloor(Renderer);
 }

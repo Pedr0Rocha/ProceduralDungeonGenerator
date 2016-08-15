@@ -28,7 +28,7 @@ body {
 .side-menu .fields input[type=number]{
 	width: 50px;
 }
-.side-menu .fields .label-title{
+.side-menu .fields .label-title, .side-menu .label-title{
 	font-weight: bold;
 	font-style: 11px;
 	letter-spacing: 1.4;
@@ -44,6 +44,7 @@ body {
 	padding: 5px;
 	border-radius: 3px;
 	cursor: pointer;
+	margin-top: 30px;
 }
 .side-menu .btn-generate:hover{
 	background-color: #fff;

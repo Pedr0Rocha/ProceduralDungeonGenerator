@@ -4,12 +4,18 @@
 	<h3 class="side-menu-title">Parameters</h3>
 	<div class="fields">
 		<label class="label-title">Number of Rooms</label>
-		<div><input type="number" name="rooms" id="rooms"></div>
+		<div><input type="number" name="rooms" id="rooms" value="50"></div>
 	</div>
 	<div class="fields">
 		<label class="label-title">Room Size</label>
-		<div><label>Max:</label><input type="number" name="maxSize" id="maxSize">
-		<label>Min:</label><input type="number" name="minSize" id="minSize"></div>
+		<div><label>Max:</label><input type="number" name="maxSize" id="maxSize" value="80">
+		<label>Min:</label><input type="number" name="minSize" id="minSize" value="50"></div>
+	</div>
+	<label class="label-title">Dungeon Type</label>
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" id="dungeonType"> Sparse Dungeon
+	  </label>
 	</div>
 	<button class="btn-generate" id="btn-generate" onClick="generateNewDungeon();">Generate Dungeon</button></div>
 
