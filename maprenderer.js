@@ -146,7 +146,10 @@ var Dungeon = {
     var lastY = leftyRoom.y;
     var lastX = leftyRoom.x + Math.round(leftyRoom.width / 2);
 
-    if ((leftyRoom.x + leftyRoom.width - rightyRoom.x) < this.aisleLen) {
+    var vAlignAisle = (leftyRoom.x + leftyRoom.width - rightyRoom.x) < this.aisleLen;
+    var hAlignAisle = (leftyRoom.y + leftyRoom.height - rightyRoom.y) < this.aisleLen;
+
+    if (vAlignAisle) {
       hAisle = new Rect();
       hAisle.y = getRandom(leftyRoom.y, leftyRoom.y + leftyRoom.height - this.aisleLen);
       hAisle.x = leftyRoom.x + Math.round(leftyRoom.width / 2);
@@ -157,15 +160,19 @@ var Dungeon = {
       lastX = hAisle.x + hAisle.width - this.aisleLen;
     }
 
-    if ((leftyRoom.y + leftyRoom.height - rightyRoom.y) < this.aisleLen) {
+    if (hAlignAisle) {
       vAisle = new Rect();
       if (leftyRoom.y < rightyRoom.y)
         vAisle.y = lastY;
       else
         vAisle.y = rightyRoom.y + rightyRoom.height; 
       vAisle.x = lastX;
-      vAisle.height = Math.abs(lastY - rightyRoom.y) + this.aisleLen; // 2 pixels wide walls from both rooms
+      vAisle.height = Math.abs(lastY - rightyRoom.y) + this.aisleLen;
       vAisle.width = this.aisleLen;
+    }
+
+    if (vAlignAisle && hAlignAisle) {
+      console.log("Called");
     }
 
     if (vAisle != undefined) {
@@ -215,21 +222,19 @@ var Dungeon = {
   },
 
   renderFloor: function(Renderer) {
-    for (var i in this.rooms) {
+    for (var i in this.rooms)
       this.rooms[i].renderFloor(Renderer); 
-    }
-    for (var i in this.aisle) {
+
+    for (var i in this.aisle)
       this.aisle[i].renderFloor(Renderer);
-    }
   },
 
   renderWalls: function(Renderer) {
-    for (var i in this.rooms) {
+    for (var i in this.rooms)
       this.rooms[i].renderWalls(Renderer); 
-    }
-    for (var i in this.aisle) {
+
+    for (var i in this.aisle)
       this.aisle[i].renderWalls(Renderer);
-    }
   }
 
 }
